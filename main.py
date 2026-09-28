@@ -16,26 +16,25 @@ kaart = [
  7, 7, 7, 7, 
  8, 8, 8, 8, 
  9, 9, 9, 9, 9, 9, 9, 9, 9, 
- 10, 10, 10, 10, 10, 10, 10,
- 11, 11, 11, 11, 11
+ 10, 10, 10, 10, 10, 10, 10, #ruilen
+ 11, 11, 11, 11, 11 #spieken
  ]
-
-stapel = 0
-
-speler1 = [0, 0, 0, 0]
-speler2 = [0, 0, 0, 0]
-
-
-
-
-def spelregelUitleg():
-    print("uitleg")
-
 
 def pakken():
     gepakteKaart = kaart[random.randint(0, (len(kaart)) - 1) ]
     kaart.remove(gepakteKaart)
     return gepakteKaart
+
+stapel = pakken()
+
+speler1 = [0, 0, 0, 0]
+speler2 = [0, 0, 0, 0]
+
+gameActive = False
+
+
+def spelregelUitleg():
+    print("uitleg")
 
 
 def vervangen(kaartInSpel):
@@ -43,12 +42,13 @@ def vervangen(kaartInSpel):
     if a == "n":
         return kaartInSpel
     else:
+        a = int(a) - 1
         oudeKaart = speler1[a] 
-        speler1[a] = kaartInSpel()
+        speler1[a] = kaartInSpel
         return oudeKaart
            
 def spieken():
-    a = input("Welke kaart wil je spieken? \n [1], [2], [3], [4]")
+    a = int(input("Welke kaart wil je spieken? \n [1], [2], [3], [4]"))
     if a == 1:
         spiek = f"{speler1[0]} | * | * | * "
     elif a == 2:
@@ -59,35 +59,69 @@ def spieken():
         spiek = f"* | * | * | {speler1[3]} "
     return spiek
 
-#Kaart ruilen
 
-    # Vraag aan de speler welke hij van zijn eigen kaarten wilt ruilen
-    # Vraag aan de speler van welke speler hij de kaart wilt ruilen
-    # Vraag welke positie hij wilt ruilen.
 def ruilen():
-    speler = input("Welke speler wil je ruilen? \n Speler [1]?")
-    kaartSpeler = input(f"Welke kaart wil je ruilen van speler {a}? \n [1], [2], [3], [4]")
-    eigenKaart = input(f"Welke eigen kaart wil je ruilen voor kaart {b} van speler {a}?")
+    speler = int(input("Welke speler wil je ruilen? \n Speler [1]?"))
+    kaartSpeler = int(input(f"Welke kaart wil je ruilen van speler {speler}? \n [1], [2], [3], [4]")) + 1
+    eigenKaart = int(input(f"Welke eigen kaart wil je ruilen voor kaart {kaartSpeler} van speler {speler}?")) + 1
 
     if speler == 1:
         a = speler2[kaartSpeler]
         speler2[kaartSpeler] = speler1[eigenKaart]
         speler1[eigenKaart] = a
-        return True
-    
 
-def laatsteBeurt():
-    ai()
-    somSpeler = speler1[0] + speler1[1] + speler1[2] + speler1[3]
-    somComputer = speler2[0] + speler2[1] + speler2 [2] + speler2[3]
-    print(f"Jouw kaarten: {speler1}, kaarten van de computer: {speler2}")
-    print(f"Jouw score is: {somSpeler}, de score van de computer is {somComputer}")
-    if somSpeler == somComputer:
-        print("Jullie hebben gelijk gespeeld")
-    elif somSpeler < somComputer:
-        print("De computer heeft gewonnen")
-    else:
-        print("Gefeliciteerd! jij hebt gewonnen!")
+def uitdelen():
+    for x in range(len(speler1)):
+        speler1[x] = pakken()
+    for x in range(len(speler2)):
+        speler2[x] = pakken()
+
+uitdelen()
+
+gameActive = True
+print(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
 
 
+while gameActive is True:
+    print(f"De bovenste kaart op de pot is {stapel}")
+    mode = input("Wat wil je doen? Wil je [S]toppen, [N]ieuwe kaart trekken of een kaart van de [P]ot pakken?")
+    if mode == "N":
+        a = pakken()
+        if a == 10:
+            print(f"Jouw kaart is ruilen")
+            if (input("Wil je ruilen?")) == "J":
+                ruilen()
+            else:
+                continue
+        elif a == 11:
+            print(f"Jouw kaart is spieken")
+            print(spieken())
+            continue
+        else: 
+            print(f"Jouw kaart is {a}")
+            stapel = vervangen(int(a))
+            continue
+    elif mode == "S":
+        for x in range(len(speler1)):
+            while speler1[x] > 9:
+                print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
+                speler1[x] = pakken()
+        for x in range(len(speler2)):
+            while speler2[x] > 9:
+                print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
+                speler1[x] = pakken()
+
+        somSpeler = speler1[0] + speler1[1] + speler1[2] + speler1[3]
+        somComputer = speler2[0] + speler2[1] + speler2 [2] + speler2[3]
+        print(f"Jouw kaarten: {speler1}, kaarten van de computer: {speler2}")
+        print(f"Jouw score is: {somSpeler}, de score van de computer is {somComputer}")
+        if somSpeler == somComputer:
+            print("Jullie hebben gelijk gespeeld")
+        elif somSpeler > somComputer:
+            print("De computer heeft gewonnen")
+        else:
+            print("Gefeliciteerd! jij hebt gewonnen!")
+        gameActive = False
+    elif mode == "P":
+        stapel = vervangen(stapel)
 
