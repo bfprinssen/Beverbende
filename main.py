@@ -1,4 +1,6 @@
 import random
+import os
+import time
 # Stock kaarten 
 # 0 tot 8 = 4x in het spel
 # 9 = 9x in het spel
@@ -80,9 +82,11 @@ uitdelen()
 
 gameActive = True
 print(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
-
+time.sleep(2)
+os.system('cls' if os.name == 'nt' else 'clear')
 
 while gameActive is True:
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(f"De bovenste kaart op de pot is {stapel}")
     mode = input("Wat wil je doen? Wil je [S]toppen, [N]ieuwe kaart trekken of een kaart van de [P]ot pakken?")
     if mode == "N":
@@ -96,6 +100,7 @@ while gameActive is True:
         elif a == 11:
             print(f"Jouw kaart is spieken")
             print(spieken())
+            time.sleep(2)
             continue
         else: 
             print(f"Jouw kaart is {a}")
@@ -109,7 +114,7 @@ while gameActive is True:
         for x in range(len(speler2)):
             while speler2[x] > 9:
                 print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
-                speler1[x] = pakken()
+                speler2[x] = pakken()
 
         somSpeler = speler1[0] + speler1[1] + speler1[2] + speler1[3]
         somComputer = speler2[0] + speler2[1] + speler2 [2] + speler2[3]
