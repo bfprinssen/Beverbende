@@ -8,24 +8,28 @@ import time
 # kijkkaart = 7x in het spel
 
 kaart = [
- 0, 0, 0, 0, 
- 1, 1, 1, 1, 
- 2, 2, 2, 2, 
- 3, 3, 3, 3, 
- 4, 4, 4, 4, 
- 5, 5, 5, 5, 
- 6, 6, 6, 6, 
- 7, 7, 7, 7, 
- 8, 8, 8, 8, 
- 9, 9, 9, 9, 9, 9, 9, 9, 9, 
- 10, 10, 10, 10, 10, 10, 10, #ruilen
- 11, 11, 11, 11, 11 #spieken
- ]
+0, 0, 0, 0, 
+1, 1, 1, 1, 
+2, 2, 2, 2, 
+3, 3, 3, 3, 
+4, 4, 4, 4, 
+5, 5, 5, 5, 
+6, 6, 6, 6, 
+7, 7, 7, 7, 
+8, 8, 8, 8, 
+9, 9, 9, 9, 9, 9, 9, 9, 9, 
+10, 10, 10, 10, 10, 10, 10, #ruilen
+11, 11, 11, 11, 11 #spieken
+]
+
+beurtPlayer = True
 
 def pakken():
     gepakteKaart = kaart[random.randint(0, (len(kaart)) - 1)]
     kaart.remove(gepakteKaart)
     return gepakteKaart
+
+
 def clearScreen():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(" ____  ________      ________ _____  ____  ______ _   _ _____  ______\n|  _ \\|  ____\\ \\    / /  ____|  __ \\|  _ \\|  ____| \\ | |  __ \\|  ____|\n| |_) | |__   \\ \\  / /| |__  | |__) | |_) | |__  |  \\| | |  | | |__\n|  _ <|  __|   \\ \\/ / |  __| |  _  /|  _ <|  __| | . ` | |  | |  __|\n| |_) | |____   \\  /  | |____| | \\ \\| |_) | |____| |\\  | |__| | |____\n|____/|______|   \\/   |______|_|  \\_\\____/|______|_| \\_|_____/|______|")
@@ -80,7 +84,7 @@ def spelregelUitleg():
         elif optie == "6":
             uitleg = False
 
-            
+
 def vervangen(kaartInSpel):
     a = input(f"Op welke plek wil je {kaartInSpel} zetten? \n[1], [2], [3], [4] of [0]Niet")
     if a == "0":
@@ -90,7 +94,7 @@ def vervangen(kaartInSpel):
         oudeKaart = speler1[a] 
         speler1[a] = kaartInSpel
         return oudeKaart
-           
+
 def spieken():
     a = int(input("Welke kaart wil je spieken? \n [1], [2], [3], [4]"))
     if a == 1:
@@ -103,6 +107,48 @@ def spieken():
         spiek = f"* | * | * | {speler1[3]} "
     return spiek
 
+def stoppen():
+    for x in range(len(speler1)):
+        while speler1[x] > 9:
+            print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
+            speler1[x] = pakken()
+    for x in range(len(speler2)):
+        while speler2[x] > 9:
+            print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
+            speler2[x] = pakken()
+
+    somSpeler = speler1[0] + speler1[1] + speler1[2] + speler1[3]
+    somComputer = speler2[0] + speler2[1] + speler2[2] + speler2[3]
+    print(f"Jouw kaarten: {speler1}, kaarten van de computer: {speler2}")
+    print(f"Jouw score is: {somSpeler}, de score van de computer is: {somComputer}")
+    if somSpeler == somComputer:
+        print("Jullie hebben gelijk gespeeld")
+    elif somSpeler > somComputer:
+        print("De computer heeft gewonnen...")
+    else:
+        print("Gefeliciteerd! jij hebt gewonnen!")
+    gameActive = False
+
+
+def bot(): 
+    b_bot = pakken()
+    if b_bot == 10:
+        pass
+    if b_bot == 11:
+        randomKaart = random.randint(0, 3)
+        speler2_see[randomKaart] = speler2[randomKaart]
+        pass
+    if b_bot < 5:
+        veranderKaart = max(speler2_see)
+        speler2[speler2_see.index(veranderKaart)] = b_bot
+        pass
+    if stapel < 5:
+        veranderKaart = max(speler2_see)
+        speler2[speler2_see.index(veranderKaart)] = stapel
+        pass
+    print(f"Ai zijn kaarten: {speler2[0]} | {speler2[1]} | {speler2[2]} | {speler2[3]}")
+    print(f"Ai zijn zichtbare kaarten: {speler2_see[0]} | {speler2_see[1]} | {speler2_see[2]} | {speler2_see[3]}")
+    print("De computer heeft een kaart gepakt")
 
 def ruilen():
     speler = int(input("Welke speler wil je ruilen? \n[1]Speler 1?"))
@@ -133,53 +179,43 @@ ronde = 1
 speler1 = [0, 0, 0, 0]
 speler2 = [0, 0, 0, 0]
 uitdelen()
+speler2_see = [speler2[0], 6, 6, speler2[3]]
 clearScreen()
 print(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
 time.sleep(2)
 
 while gameActive is True:
-    clearScreen()
-    print(f"Ronde: {ronde} \nHuididge speler: Jij \nJouw kaarten: * | * | * | * ")
-    ronde = ronde + 1
-    print(f"De bovenste kaart op de pot is {stapel}")
-    mode = input("Wat wil je doen? \n[1]Stoppen \n[2]Nieuwe kaart trekken \n[3]Pak de kaart van de stapel")
-    if mode == "2":
-        a = pakken()
-        if a == 10:
-            print(f"Jouw kaart is ruilen")
-            if (input("Wil je ruilen? \n [1]Ja \n [2]Nee")) == "1":
-                ruilen()
-            else:
+    while beurtPlayer is True:
+        beurtPlayer = False
+        clearScreen()
+        print(f"Ronde: {ronde} \nHuididge speler: Jij \nJouw kaarten: * | * | * | * ")
+        ronde = ronde + 1
+        print(f"De bovenste kaart op de pot is {stapel}")
+        mode = input("Wat wil je doen? \n[1]Stoppen \n[2]Nieuwe kaart trekken \n[3]Pak de kaart van de stapel")
+        if mode == "2":
+            a = pakken()
+            if a == 10:
+                print(f"Jouw kaart is ruilen")
+                if (input("Wil je ruilen? \n [1]Ja \n [2]Nee")) == "1":
+                    ruilen()
+                else:
+                    continue
+            elif a == 11:
+                print(f"Jouw kaart is spieken")
+                print(spieken())
+                time.sleep(2)
                 continue
-        elif a == 11:
-            print(f"Jouw kaart is spieken")
-            print(spieken())
-            time.sleep(2)
-            continue
-        else: 
-            print(f"Jouw kaart is {a}")
-            stapel = vervangen(int(a))
-            continue
-    elif mode == "1":
-        for x in range(len(speler1)):
-            while speler1[x] > 9:
-                print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
-                speler1[x] = pakken()
-        for x in range(len(speler2)):
-            while speler2[x] > 9:
-                print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
-                speler2[x] = pakken()
-
-        somSpeler = speler1[0] + speler1[1] + speler1[2] + speler1[3]
-        somComputer = speler2[0] + speler2[1] + speler2 [2] + speler2[3]
-        print(f"Jouw kaarten: {speler1}, kaarten van de computer: {speler2}")
-        print(f"Jouw score is: {somSpeler}, de score van de computer is: {somComputer}")
-        if somSpeler == somComputer:
-            print("Jullie hebben gelijk gespeeld")
-        elif somSpeler > somComputer:
-            print("De computer heeft gewonnen...")
-        else:
-            print("Gefeliciteerd! jij hebt gewonnen!")
-    elif mode == "3":
-        stapel = vervangen(stapel)
-
+            else: 
+                print(f"Jouw kaart is {a}")
+                stapel = vervangen(int(a))
+                continue
+        elif mode == "1":
+            stoppen()
+        elif mode == "3":
+            stapel = vervangen(stapel)
+    while beurtPlayer is False:
+        beurtPlayer = True
+        clearScreen()
+        bot()
+        time.sleep(5)
+ 
