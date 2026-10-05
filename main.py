@@ -23,6 +23,7 @@ kaart = [
 ]
 
 beurtPlayer = True
+gameActive = False
 
 def pakken():
     gepakteKaart = kaart[random.randint(0, (len(kaart)) - 1)]
@@ -34,7 +35,6 @@ def clearScreen():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(" ____  ________      ________ _____  ____  ______ _   _ _____  ______\n|  _ \\|  ____\\ \\    / /  ____|  __ \\|  _ \\|  ____| \\ | |  __ \\|  ____|\n| |_) | |__   \\ \\  / /| |__  | |__) | |_) | |__  |  \\| | |  | | |__\n|  _ <|  __|   \\ \\/ / |  __| |  _  /|  _ <|  __| | . ` | |  | |  __|\n| |_) | |____   \\  /  | |____| | \\ \\| |_) | |____| |\\  | |__| | |____\n|____/|______|   \\/   |______|_|  \\_\\____/|______|_| \\_|_____/|______|")
 
-gameActive = False
 
 def welkom():
     clearScreen()
@@ -42,6 +42,7 @@ def welkom():
     print("Probeer zo min mogelijk strafpunten te verzamelen, maar omdat je maar twee van je vier kaarten kent, is dat niet zo eenvoudig.")
     print("Met de kaarten die je trekt kun je ruilen en acties uitvoeren. Zo weet je steeds meer van je eigen kaarten en die van je tegenstanders.")
     print("Maar dat geldt natuurlijk ook voor de andere spelers!")
+
 
 def spelregelUitleg():
     uitleg = True
@@ -95,6 +96,7 @@ def vervangen(kaartInSpel):
         speler1[a] = kaartInSpel
         return oudeKaart
 
+
 def spieken():
     a = int(input("Welke kaart wil je spieken? \n [1], [2], [3], [4]"))
     if a == 1:
@@ -106,6 +108,7 @@ def spieken():
     elif a == 4:
         spiek = f"* | * | * | {speler1[3]} "
     return spiek
+
 
 def stoppen():
     for x in range(len(speler1)):
@@ -130,34 +133,6 @@ def stoppen():
     return False
 
 
-
-
-def bot():
-    global stapel
-    score = speler2[0] + speler2[1] + speler2[2] + speler2[3]
-    b_bot = pakken()
-    if b_bot == 10:
-        stapel = b_bot
-    elif b_bot == 11:
-        randomKaart = random.randint(0, 3)
-        speler2_see[randomKaart] = speler2[randomKaart]
-    elif b_bot < 6:
-        veranderKaart = max(speler2_see)
-        kaartIndex = speler2_see.index(veranderKaart)
-        stapel = speler2[kaartIndex]
-        speler2[kaartIndex] = b_bot
-        speler2_see[kaartIndex] = b_bot
-    elif stapel < 6:
-        veranderKaart = max(speler2_see)
-        kaartIndex = speler2_see.index(veranderKaart)
-        speler2[kaartIndex], stapel = stapel, speler2[kaartIndex]
-        speler2_see[kaartIndex] = stapel
-    else:
-        stapel = b_bot
-    if score < 10:
-        stoppen()
-    print("De computer heeft een kaart gepakt")
-
 def ruilen():
     speler = int(input("Welke speler wil je ruilen? \n[1]Speler 1?"))
     kaartSpeler = int(input(f"Welke kaart wil je ruilen van speler {speler}? \n[1], [2], [3] of [4]")) + 1
@@ -169,11 +144,13 @@ def ruilen():
         speler2[kaartSpeler] = speler1[eigenKaart]
         speler1[eigenKaart] = a
 
+
 def uitdelen():
     for x in range(len(speler1)):
         speler1[x] = pakken()
     for x in range(len(speler2)):
         speler2[x] = pakken()
+
 
 welkom()
 uitleg = input("Ken je de spelregels al, of wil je uitleg? \n[1]Ik ken de regels al \n[2]Ik wil graag uitleg")
@@ -193,7 +170,7 @@ print(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
 time.sleep(5)
 
 while gameActive is True:
-    if beurtPlayer is True:
+    if beurtPlayer is True: #Beurt van de speler
         beurtPlayer = False
         clearScreen()
         print(f"Ronde: {ronde} \nHuididge speler: Jij \nJouw kaarten: * | * | * | * ")
@@ -222,8 +199,31 @@ while gameActive is True:
             break
         elif mode == "3":
             stapel = vervangen(stapel)
-    elif beurtPlayer is False:
+    elif beurtPlayer is False: #beurt van de computer
         beurtPlayer = True
-        bot()
+        score = speler2[0] + speler2[1] + speler2[2] + speler2[3]
+        b_bot = pakken()
+        if b_bot == 10:
+            stapel = b_bot
+        elif b_bot == 11:
+            randomKaart = random.randint(0, 3)
+            speler2_see[randomKaart] = speler2[randomKaart]
+        elif b_bot < 6:
+            veranderKaart = max(speler2_see)
+            kaartIndex = speler2_see.index(veranderKaart)
+            stapel = speler2[kaartIndex]
+            speler2[kaartIndex] = b_bot
+            speler2_see[kaartIndex] = b_bot
+        elif stapel < 6:
+            veranderKaart = max(speler2_see)
+            kaartIndex = speler2_see.index(veranderKaart)
+            speler2[kaartIndex], stapel = stapel, speler2[kaartIndex]
+            speler2_see[kaartIndex] = stapel
+        else:
+            stapel = b_bot
+        if score < 10:
+            stoppen()
+            break
+        print("De computer heeft een kaart gepakt")
         time.sleep(2)
  
