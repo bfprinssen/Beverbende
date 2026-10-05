@@ -130,25 +130,38 @@ def stoppen():
     return False
 
 
-def bot(): 
+
+def bot():
+    global stapel
+    score = speler2[0] + speler2[1] + speler2[2] + speler2[3]
     b_bot = pakken()
     if b_bot == 10:
-        pass
-    if b_bot == 11:
+        stapel = b_bot
+    elif b_bot == 11:
         randomKaart = random.randint(0, 3)
         speler2_see[randomKaart] = speler2[randomKaart]
-        pass
-    if b_bot < 5:
+    elif b_bot < 6:
         veranderKaart = max(speler2_see)
-        speler2[speler2_see.index(veranderKaart)] = b_bot
-        pass
-    if stapel < 5:
+        kaartIndex = speler2_see.index(veranderKaart)
+        stapel = speler2[kaartIndex]
+        speler2[kaartIndex] = b_bot
+        speler2_see[kaartIndex] = b_bot
+    elif stapel < 6:
         veranderKaart = max(speler2_see)
-        speler2[speler2_see.index(veranderKaart)] = stapel
-        pass
-    print(f"Ai zijn kaarten: {speler2[0]} | {speler2[1]} | {speler2[2]} | {speler2[3]}")
-    print(f"Ai zijn zichtbare kaarten: {speler2_see[0]} | {speler2_see[1]} | {speler2_see[2]} | {speler2_see[3]}")
-    print("De computer heeft een kaart gepakt")
+        kaartIndex = speler2_see.index(veranderKaart)
+        speler2[kaartIndex], stapel = stapel, speler2[kaartIndex]
+        speler2_see[kaartIndex] = stapel
+    else:
+        stapel = b_bot
+    if score < 10:
+        for x in range(len(speler1)):
+            while speler1[x] > 9:
+                print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
+                speler1[x] = pakken()
+        for x in range(len(speler2)):
+            while speler2[x] > 9:
+                print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
+                speler2[x] = pakken()
 
 def ruilen():
     speler = int(input("Welke speler wil je ruilen? \n[1]Speler 1?"))
