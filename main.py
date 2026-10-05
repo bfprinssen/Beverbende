@@ -110,11 +110,11 @@ def spieken():
 def stoppen():
     for x in range(len(speler1)):
         while speler1[x] > 9:
-            print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
+            print("Geen actiekaart in kaarten toegestaan. Pak een nieuwe...")
             speler1[x] = pakken()
     for x in range(len(speler2)):
         while speler2[x] > 9:
-            print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
+            print("Geen actiekaart in kaarten toegestaan. Pak een nieuwe...")
             speler2[x] = pakken()
 
     somSpeler = speler1[0] + speler1[1] + speler1[2] + speler1[3]
@@ -128,6 +128,7 @@ def stoppen():
     else:
         print("Gefeliciteerd! jij hebt gewonnen!")
     return False
+
 
 
 
@@ -154,14 +155,8 @@ def bot():
     else:
         stapel = b_bot
     if score < 10:
-        for x in range(len(speler1)):
-            while speler1[x] > 9:
-                print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
-                speler1[x] = pakken()
-        for x in range(len(speler2)):
-            while speler2[x] > 9:
-                print("Geen actiekaart in kaarten toegstaan. Pak een nieuwe...")
-                speler2[x] = pakken()
+        stoppen()
+    print("De computer heeft een kaart gepakt")
 
 def ruilen():
     speler = int(input("Welke speler wil je ruilen? \n[1]Speler 1?"))
@@ -195,7 +190,7 @@ uitdelen()
 speler2_see = [speler2[0], 6, 6, speler2[3]]
 clearScreen()
 print(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
-time.sleep(2)
+time.sleep(5)
 
 while gameActive is True:
     if beurtPlayer is True:
@@ -230,5 +225,5 @@ while gameActive is True:
     elif beurtPlayer is False:
         beurtPlayer = True
         bot()
-        time.sleep(5)
+        time.sleep(2)
  
