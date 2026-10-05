@@ -127,7 +127,7 @@ def stoppen():
         print("De computer heeft gewonnen...")
     else:
         print("Gefeliciteerd! jij hebt gewonnen!")
-    gameActive = False
+    return False
 
 
 def bot(): 
@@ -185,7 +185,7 @@ print(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
 time.sleep(2)
 
 while gameActive is True:
-    while beurtPlayer is True:
+    if beurtPlayer is True:
         beurtPlayer = False
         clearScreen()
         print(f"Ronde: {ronde} \nHuididge speler: Jij \nJouw kaarten: * | * | * | * ")
@@ -210,12 +210,12 @@ while gameActive is True:
                 stapel = vervangen(int(a))
                 continue
         elif mode == "1":
-            stoppen()
+            gameActive = stoppen()
+            break
         elif mode == "3":
             stapel = vervangen(stapel)
-    while beurtPlayer is False:
+    elif beurtPlayer is False:
         beurtPlayer = True
-        clearScreen()
         bot()
         time.sleep(5)
  
