@@ -1,36 +1,39 @@
 import random
 import os
 import time
-# Stock kaarten 
+# Stock kaarten
 # 0 tot 8 = 4x in het spel
 # 9 = 9x in het spel
 # ruilkaart = 9x in het spel
 # kijkkaart = 7x in het spel
 
-def slowPrint(text, delay=0.03): # Print met delay function
+
+def slowPrint(text, delay=0.03):  # Print met delay function
     for letter in text:
         print(letter, end="", flush=True)
         time.sleep(delay)
 
     print()
 
+
 kaart = [
-0, 0, 0, 0, 
-1, 1, 1, 1, 
-2, 2, 2, 2, 
-3, 3, 3, 3, 
-4, 4, 4, 4, 
-5, 5, 5, 5, 
-6, 6, 6, 6, 
-7, 7, 7, 7, 
-8, 8, 8, 8, 
-9, 9, 9, 9, 9, 9, 9, 9, 9, 
-10, 10, 10, 10, 10, 10, 10, #ruilen
-11, 11, 11, 11, 11 #spieken
+    0, 0, 0, 0,
+    1, 1, 1, 1,
+    2, 2, 2, 2,
+    3, 3, 3, 3,
+    4, 4, 4, 4,
+    5, 5, 5, 5,
+    6, 6, 6, 6,
+    7, 7, 7, 7,
+    8, 8, 8, 8,
+    9, 9, 9, 9, 9, 9, 9, 9, 9,
+    10, 10, 10, 10, 10, 10, 10,  # ruilen
+    11, 11, 11, 11, 11  # spieken
 ]
 
 beurtPlayer = True
 gameActive = False
+
 
 def pakken():
     gepakteKaart = kaart[random.randint(0, (len(kaart)) - 1)]
@@ -56,7 +59,8 @@ def spelregelUitleg():
     slowPrint("Elke speler heeft 4 gedekte kaarten varierend van 0 t/m 9. Aan het begin van het spel mag je alleen de buitenste 2 kaarten spieken")
     slowPrint("Het doel van het spel is zo min mogelijk strafpunten te hebben.")
     while uitleg is True:
-        slowPrint("Aan het begin van elke beurt heb je 3 opties; Welke regel snap je nog niet?")
+        slowPrint(
+            "Aan het begin van elke beurt heb je 3 opties; Welke regel snap je nog niet?")
         print("[1]Een nieuwe kaart \n[2]Stoppen \n[3]De pot \n[4]Ruilen \n[5]Spieken \n[6]Ik snap het, ik wil beginnen.")
         optie = input("")
         if optie == "1":
@@ -72,9 +76,11 @@ def spelregelUitleg():
                 continue
         elif optie == "2":
             slowPrint("Stoppen:")
-            slowPrint("Als je denkt dat je de laagste strafpunten hebt dan iedereen moet je stoppen.")
+            slowPrint(
+                "Als je denkt dat je de laagste strafpunten hebt dan iedereen moet je stoppen.")
             slowPrint("Vul 1 in in het menu. Alle spelers na jou mogen nog 1 beurt afmaken. Daarna worden alle kaarten opgeteld. \nDe gene met de laagste strafpunten wint.")
-            slowPrint("Wil je nog meer uitleg? \n[1]Ja \n[2]Nee \n[3]Ander onderwerp.")
+            slowPrint(
+                "Wil je nog meer uitleg? \n[1]Ja \n[2]Nee \n[3]Ander onderwerp.")
             nieuweKaartUitleg = input()
             if nieuweKaartUitleg == "1":
                 slowPrint("Een voorbeeld: Ik spieke aan het begin van het spel dat ik op positie 1 en 4 een 0 heb liggen. Na mijn eerste beurt trok ik een 1 uit de stapel. \n Een kaart is voor mij nog onbekend. Maar omdat het zo vroeg in het spel is is het verstandig om gelijk te stoppen.")
@@ -84,22 +90,25 @@ def spelregelUitleg():
                 continue
         elif optie == "3":
             slowPrint("Een kaart van de pot pakken:")
-            slowPrint("In plaats van een nieuwe kaart pakken kan je ook een kaart van de pot pakken die door een andere speler werd verworpen.")     
+            slowPrint(
+                "In plaats van een nieuwe kaart pakken kan je ook een kaart van de pot pakken die door een andere speler werd verworpen.")
         elif optie == "4":
             slowPrint("Ruilen: \nJe kan je kaart ruilen met een kaart van een andere speler.\nDit kan je bijvoorbeeld doen als je ziet dat een speler een 0 van de pot pakt.")
-        elif optie == "5": 
-            slowPrint("Spieken: \nJe kan een van je eigen kaart spieken! Handig als je er een bent vergeten.")
+        elif optie == "5":
+            slowPrint(
+                "Spieken: \nJe kan een van je eigen kaart spieken! Handig als je er een bent vergeten.")
         elif optie == "6":
             uitleg = False
 
 
 def vervangen(kaartInSpel):
-    a = input(f"Op welke plek wil je {kaartInSpel} zetten? \n[1], [2], [3], [4] of [0]Niet")
+    a = input(
+        f"Op welke plek wil je {kaartInSpel} zetten? \n[1], [2], [3], [4] of [0]Niet")
     if a == "0":
         return kaartInSpel
     else:
         a = int(a) - 1
-        oudeKaart = speler1[a] 
+        oudeKaart = speler1[a]
         speler1[a] = kaartInSpel
         return oudeKaart
 
@@ -120,17 +129,20 @@ def spieken():
 def stoppen():
     for x in range(len(speler1)):
         while speler1[x] > 9:
-            print(f"Geen actiekaart op positie {x} toegestaan. Pak een nieuwe...")
+            print(
+                f"Geen actiekaart op positie {x} toegestaan. Pak een nieuwe...")
             speler1[x] = pakken()
     for x in range(len(speler2)):
         while speler2[x] > 9:
-            print(f"Geen actiekaart op positie {x} toegestaan. Pak een nieuwe...")
+            print(
+                f"Geen actiekaart op positie {x} toegestaan. Pak een nieuwe...")
             speler2[x] = pakken()
 
     somSpeler = speler1[0] + speler1[1] + speler1[2] + speler1[3]
     somComputer = speler2[0] + speler2[1] + speler2[2] + speler2[3]
     slowPrint(f"Jouw kaarten: {speler1}, kaarten van de computer: {speler2}")
-    slowPrint(f"Jouw score is: {somSpeler}, de score van de computer is: {somComputer}")
+    slowPrint(
+        f"Jouw score is: {somSpeler}, de score van de computer is: {somComputer}")
     if somSpeler == somComputer:
         slowPrint("Jullie hebben gelijk gespeeld")
     elif somSpeler > somComputer:
@@ -142,8 +154,10 @@ def stoppen():
 
 def ruilen():
     speler = int(input("Welke speler wil je ruilen? \n[1]Speler 1?"))
-    kaartSpeler = int(input(f"Welke kaart wil je ruilen van speler {speler}? \n[1], [2], [3] of [4]")) + 1
-    slowPrint(f"Welke eigen kaart wil je ruilen voor kaart {kaartSpeler} van speler {speler}?")
+    kaartSpeler = int(input(
+        f"Welke kaart wil je ruilen van speler {speler}? \n[1], [2], [3] of [4]")) + 1
+    slowPrint(
+        f"Welke eigen kaart wil je ruilen voor kaart {kaartSpeler} van speler {speler}?")
     eigenKaart = int(input("[1], [2], [3] of [4]")) + 1
 
     if speler == 1:
@@ -159,10 +173,10 @@ def uitdelen():
         speler2[x] = pakken()
 
 
-welkom()
-uitleg = input("Ken je de spelregels al, of wil je uitleg? \n[1]Ik ken de regels al \n[2]Ik wil graag uitleg")
-if uitleg == "2":
-    spelregelUitleg()
+# welkom()
+# uitleg = input("Ken je de spelregels al, of wil je uitleg? \n[1]Ik ken de regels al \n[2]Ik wil graag uitleg")
+# if uitleg == "2":
+#     spelregelUitleg()
 
 
 gameActive = True
@@ -170,67 +184,66 @@ stapel = pakken()
 ronde = 1
 speler1 = [0, 0, 0, 0]
 speler2 = [0, 0, 0, 0]
-uitdelen()
+# uitdelen()
 speler2_see = [speler2[0], 6, 6, speler2[3]]
-clearScreen()
-slowPrint(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
-time.sleep(5)
+# clearScreen()
+# slowPrint(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
+# time.sleep(5)
 
-while gameActive is True:
-    if beurtPlayer is True: #Beurt van de speler
-        beurtPlayer = False
-        clearScreen()
-        slowPrint(f"Ronde: {ronde} \nHuididge speler: Jij \nJouw kaarten: * | * | * | * ")
-        ronde = ronde + 1
-        slowPrint(f"De bovenste kaart op de pot is {stapel}")
-        mode = input("Wat wil je doen? \n[1]Stoppen \n[2]Nieuwe kaart trekken \n[3]Pak de kaart van de stapel")
-        if mode == "2":
-            a = pakken()
-            if a == 10:
-                slowPrint(f"Jouw kaart is ruilen")
-                if (input("Wil je ruilen? \n [1]Ja \n [2]Nee")) == "1":
-                    ruilen()
-                else:
-                    continue
-            elif a == 11:
-                slowPrint(f"Jouw kaart is spieken")
-                slowPrint(spieken())
-                time.sleep(2)
-                continue
-            else: 
-                slowPrint(f"Jouw kaart is {a}")
-                stapel = vervangen(int(a))
-                continue
-        elif mode == "1":
-            gameActive = stoppen()
-            break
-        elif mode == "3":
-            stapel = vervangen(stapel)
-    elif beurtPlayer is False: #beurt van de computer
-        beurtPlayer = True
-        score = speler2[0] + speler2[1] + speler2[2] + speler2[3]
-        b_bot = pakken()
-        if b_bot == 10:
-            stapel = b_bot
-        elif b_bot == 11:
-            randomKaart = random.randint(0, 3)
-            speler2_see[randomKaart] = speler2[randomKaart]
-        elif b_bot < 6:
-            veranderKaart = max(speler2_see)
-            kaartIndex = speler2_see.index(veranderKaart)
-            stapel = speler2[kaartIndex]
-            speler2[kaartIndex] = b_bot
-            speler2_see[kaartIndex] = b_bot
-        elif stapel < 6:
-            veranderKaart = max(speler2_see)
-            kaartIndex = speler2_see.index(veranderKaart)
-            speler2[kaartIndex], stapel = stapel, speler2[kaartIndex]
-            speler2_see[kaartIndex] = stapel
-        else:
-            stapel = b_bot
-        if score < 10:
-            stoppen()
-            break
-        slowPrint("De computer heeft een kaart gepakt")
-        time.sleep(2)
- 
+# while gameActive is True:
+#     if beurtPlayer is True: #Beurt van de speler
+#         beurtPlayer = False
+#         clearScreen()
+#         slowPrint(f"Ronde: {ronde} \nHuididge speler: Jij \nJouw kaarten: * | * | * | * ")
+#         ronde = ronde + 1
+#         slowPrint(f"De bovenste kaart op de pot is {stapel}")
+#         mode = input("Wat wil je doen? \n[1]Stoppen \n[2]Nieuwe kaart trekken \n[3]Pak de kaart van de stapel")
+#         if mode == "2":
+#             a = pakken()
+#             if a == 10:
+#                 slowPrint(f"Jouw kaart is ruilen")
+#                 if (input("Wil je ruilen? \n [1]Ja \n [2]Nee")) == "1":
+#                     ruilen()
+#                 else:
+#                     continue
+#             elif a == 11:
+#                 slowPrint(f"Jouw kaart is spieken")
+#                 slowPrint(spieken())
+#                 time.sleep(2)
+#                 continue
+#             else:
+#                 slowPrint(f"Jouw kaart is {a}")
+#                 stapel = vervangen(int(a))
+#                 continue
+#         elif mode == "1":
+#             gameActive = stoppen()
+#             break
+#         elif mode == "3":
+#             stapel = vervangen(stapel)
+#     elif beurtPlayer is False: #beurt van de computer
+#         beurtPlayer = True
+#         score = speler2[0] + speler2[1] + speler2[2] + speler2[3]
+#         b_bot = pakken()
+#         if b_bot == 10:
+#             stapel = b_bot
+#         elif b_bot == 11:
+#             randomKaart = random.randint(0, 3)
+#             speler2_see[randomKaart] = speler2[randomKaart]
+#         elif b_bot < 6:
+#             veranderKaart = max(speler2_see)
+#             kaartIndex = speler2_see.index(veranderKaart)
+#             stapel = speler2[kaartIndex]
+#             speler2[kaartIndex] = b_bot
+#             speler2_see[kaartIndex] = b_bot
+#         elif stapel < 6:
+#             veranderKaart = max(speler2_see)
+#             kaartIndex = speler2_see.index(veranderKaart)
+#             speler2[kaartIndex], stapel = stapel, speler2[kaartIndex]
+#             speler2_see[kaartIndex] = stapel
+#         else:
+#             stapel = b_bot
+#         if score < 10:
+#             stoppen()
+#             break
+#         slowPrint("De computer heeft een kaart gepakt")
+#         time.sleep(2)
