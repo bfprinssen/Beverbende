@@ -184,66 +184,68 @@ stapel = pakken()
 ronde = 1
 speler1 = [0, 0, 0, 0]
 speler2 = [0, 0, 0, 0]
-# uitdelen()
+uitdelen()
 speler2_see = [speler2[0], 6, 6, speler2[3]]
-# clearScreen()
-# slowPrint(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
-# time.sleep(5)
+clearScreen()
+slowPrint(f"Onthoud deze kaarten goed! {speler1[0]} | * | * | {speler1[3]}")
+time.sleep(5)
 
-# while gameActive is True:
-#     if beurtPlayer is True: #Beurt van de speler
-#         beurtPlayer = False
-#         clearScreen()
-#         slowPrint(f"Ronde: {ronde} \nHuididge speler: Jij \nJouw kaarten: * | * | * | * ")
-#         ronde = ronde + 1
-#         slowPrint(f"De bovenste kaart op de pot is {stapel}")
-#         mode = input("Wat wil je doen? \n[1]Stoppen \n[2]Nieuwe kaart trekken \n[3]Pak de kaart van de stapel")
-#         if mode == "2":
-#             a = pakken()
-#             if a == 10:
-#                 slowPrint(f"Jouw kaart is ruilen")
-#                 if (input("Wil je ruilen? \n [1]Ja \n [2]Nee")) == "1":
-#                     ruilen()
-#                 else:
-#                     continue
-#             elif a == 11:
-#                 slowPrint(f"Jouw kaart is spieken")
-#                 slowPrint(spieken())
-#                 time.sleep(2)
-#                 continue
-#             else:
-#                 slowPrint(f"Jouw kaart is {a}")
-#                 stapel = vervangen(int(a))
-#                 continue
-#         elif mode == "1":
-#             gameActive = stoppen()
-#             break
-#         elif mode == "3":
-#             stapel = vervangen(stapel)
-#     elif beurtPlayer is False: #beurt van de computer
-#         beurtPlayer = True
-#         score = speler2[0] + speler2[1] + speler2[2] + speler2[3]
-#         b_bot = pakken()
-#         if b_bot == 10:
-#             stapel = b_bot
-#         elif b_bot == 11:
-#             randomKaart = random.randint(0, 3)
-#             speler2_see[randomKaart] = speler2[randomKaart]
-#         elif b_bot < 6:
-#             veranderKaart = max(speler2_see)
-#             kaartIndex = speler2_see.index(veranderKaart)
-#             stapel = speler2[kaartIndex]
-#             speler2[kaartIndex] = b_bot
-#             speler2_see[kaartIndex] = b_bot
-#         elif stapel < 6:
-#             veranderKaart = max(speler2_see)
-#             kaartIndex = speler2_see.index(veranderKaart)
-#             speler2[kaartIndex], stapel = stapel, speler2[kaartIndex]
-#             speler2_see[kaartIndex] = stapel
-#         else:
-#             stapel = b_bot
-#         if score < 10:
-#             stoppen()
-#             break
-#         slowPrint("De computer heeft een kaart gepakt")
-#         time.sleep(2)
+while gameActive is True:
+    if beurtPlayer is True:  # Beurt van de speler
+        beurtPlayer = False
+        clearScreen()
+        slowPrint(
+            f"Ronde: {ronde} \nHuididge speler: Jij \nJouw kaarten: * | * | * | * ")
+        ronde = ronde + 1
+        slowPrint(f"De bovenste kaart op de pot is {stapel}")
+        mode = input(
+            "Wat wil je doen? \n[1]Stoppen \n[2]Nieuwe kaart trekken \n[3]Pak de kaart van de stapel")
+        if mode == "2":
+            a = pakken()
+            if a == 10:
+                slowPrint(f"Jouw kaart is ruilen")
+                if (input("Wil je ruilen? \n [1]Ja \n [2]Nee")) == "1":
+                    ruilen()
+                else:
+                    continue
+            elif a == 11:
+                slowPrint(f"Jouw kaart is spieken")
+                slowPrint(spieken())
+                time.sleep(2)
+                continue
+            else:
+                slowPrint(f"Jouw kaart is {a}")
+                stapel = vervangen(int(a))
+                continue
+        elif mode == "1":
+            gameActive = stoppen()
+            break
+        elif mode == "3":
+            stapel = vervangen(stapel)
+    elif beurtPlayer is False:  # beurt van de computer
+        beurtPlayer = True
+        score = speler2[0] + speler2[1] + speler2[2] + speler2[3]
+        b_bot = pakken()
+        if b_bot == 10:
+            stapel = b_bot
+        elif b_bot == 11:
+            randomKaart = random.randint(0, 3)
+            speler2_see[randomKaart] = speler2[randomKaart]
+        elif b_bot < 6:
+            veranderKaart = max(speler2_see)
+            kaartIndex = speler2_see.index(veranderKaart)
+            stapel = speler2[kaartIndex]
+            speler2[kaartIndex] = b_bot
+            speler2_see[kaartIndex] = b_bot
+        elif stapel < 6:
+            veranderKaart = max(speler2_see)
+            kaartIndex = speler2_see.index(veranderKaart)
+            speler2[kaartIndex], stapel = stapel, speler2[kaartIndex]
+            speler2_see[kaartIndex] = stapel
+        else:
+            stapel = b_bot
+        if score < 10:
+            stoppen()
+            break
+        slowPrint("De computer heeft een kaart gepakt")
+        time.sleep(2)
